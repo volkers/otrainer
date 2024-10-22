@@ -172,6 +172,19 @@ Index 0 is a8 i.e. upper left corner; this follows FEN notation"
 
 (load "repertoires")
 
+(defun print-debug ()
+  (nodgui:append-text *outconsole* "Repertoire:")
+  (nodgui:append-newline *outconsole*)
+  (nodgui:append-text *outconsole* *used-rep*)
+  (nodgui:append-newline *outconsole*)
+  (nodgui:append-text *outconsole* "Item Index: ")
+  (nodgui:append-text *outconsole* *item-index*)
+  (nodgui:append-newline *outconsole*)
+  (nodgui:append-text *outconsole* "Following moves:")
+  (nodgui:append-newline *outconsole*)
+  (nodgui:append-text *outconsole* *following-moves*)
+  (nodgui:append-newline *outconsole*))
+
 (defun main ()
   "GUI window with menu bar and scrolled text output."
   (nodgui:with-nodgui ()
@@ -194,12 +207,17 @@ Index 0 is a8 i.e. upper left corner; this follows FEN notation"
                                                       (nodgui:append-newline outconsole)))
                                          :underline 0
                                          :accelerator "Alt H"))
+           (mh-debug (nodgui:make-menubutton mhelp
+                                             "Debug"
+                                             'print-debug
+                                             :underline 0
+                                             :accelerator "Alt D"))
            (mh-about (nodgui:make-menubutton mhelp "About"
                                           (lambda () (progn
                                                        (nodgui:append-text outconsole "About called!")
                                                        (nodgui:append-newline outconsole)))
                                           :underline 0)))
-      (declare (ignore mf-exit mh-help mh-about))
+      (declare (ignore mf-exit mh-help mh-debug mh-about))
 
       ;; fill repertoire menus
       (make-rep-buttons mr-white *repertoires-white* :white)
