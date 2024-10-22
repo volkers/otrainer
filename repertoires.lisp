@@ -77,7 +77,6 @@
                                          (setf *view* colour)
                                          (setf *position* (get-starting-position))
                                          (draw-board *board* *position* *view*)
-                                         (setf *ply-number* 0)
                                          (setf *move-number* 0)
                                          (setf *expected-move* nil)
                                          (choose-item-index)

@@ -17,7 +17,6 @@
 
 (defvar *used-rep* nil "Active repertoire item")
 (defvar *item-index* nil "Active repertoire item index")
-(defvar *ply-number* nil "Actual ply number")
 (defvar *move-number* nil "Actual move number")
 (defvar *repertoires-black* nil)
 (defvar *following-moves* nil)
