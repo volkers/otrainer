@@ -19,6 +19,8 @@
 
 (in-package #:otrainer)
 
+(defvar *repo-filename* "./myrepertoire.lisp")
+
 (defun choose-item-index ()
   (let ((prob-list (map 'list #'first *used-rep*)))
     (setf *item-index* (get-rand-index prob-list))
@@ -85,7 +87,7 @@
                             )))
 
 ;; add read, save and defaults
-(load "myrepertoire.lisp")
+(load *repo-filename*)
 ;; syntax:
 ;; (setf *repertoires-black*
 ;;   '(("Sizilianisch, Grand Prix, Tal-Gambit"
