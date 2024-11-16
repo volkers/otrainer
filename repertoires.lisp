@@ -26,7 +26,7 @@
     (setf *item-index* (get-rand-index prob-list))
     (setf *following-moves* (third (svref *used-rep* *item-index*)))
     ;; (nodgui:append-text *outconsole* *item-index*)
-    ;; (nodgui:append-newline *outconsole*)
+    ;; (newline-and-scroll)
     ))
 
 (defun do-move (move)
@@ -74,7 +74,7 @@
                             (first rep-item)
                             (lambda () (progn
                                          ;; (nodgui:append-text *outconsole* (first rep-item))
-                                         ;; (nodgui:append-newline *outconsole*)
+                                         ;; (newline-and-scroll)
                                          (setf *used-rep* (second rep-item))
                                          (setf *view* colour)
                                          (setf *position* (get-starting-position))

@@ -57,8 +57,7 @@
         (progn ;; not expected
           (nodgui:append-text *outconsole* "Wrong, expected: ")
           (nodgui:append-text *outconsole* *expected-move*)
-          (nodgui:append-newline *outconsole*)
-          (nodgui:see *outconsole* "end")
+          (newline-and-scroll)
           (return-from rule-checker-move-correct-p nil))))
   ;; check general check rules
   (let ((piece (char pos from)))

@@ -22,6 +22,13 @@
 (defvar *following-moves* nil)
 (defvar *expected-move* nil)
 
+
+(defun newline-and-scroll ()
+  "Append newline and show always last line."
+  (nodgui:append-newline *outconsole*)
+  (nodgui:see *outconsole* "end"))
+
+
 (load "rule-checker")
 
 (defun quit ()
@@ -183,7 +190,7 @@ Index 0 is a8 i.e. upper left corner; this follows FEN notation"
   (nodgui:append-text *outconsole* "Following moves:")
   (nodgui:append-newline *outconsole*)
   (nodgui:append-text *outconsole* *following-moves*)
-  (nodgui:append-newline *outconsole*))
+  (newline-and-scroll))
 
 (defun main ()
   "GUI window with menu bar and scrolled text output."
@@ -204,7 +211,7 @@ Index 0 is a8 i.e. upper left corner; this follows FEN notation"
            (mh-help (nodgui:make-menubutton mhelp "Help"
                                          (lambda () (progn
                                                       (nodgui:append-text outconsole "Help called!")
-                                                      (nodgui:append-newline outconsole)))
+                                                      (newline-and-scroll)))
                                          :underline 0
                                          :accelerator "Alt H"))
            (mh-debug (nodgui:make-menubutton mhelp
@@ -215,7 +222,7 @@ Index 0 is a8 i.e. upper left corner; this follows FEN notation"
            (mh-about (nodgui:make-menubutton mhelp "About"
                                           (lambda () (progn
                                                        (nodgui:append-text outconsole "About called!")
-                                                       (nodgui:append-newline outconsole)))
+                                                       (newline-and-scroll)))
                                           :underline 0)))
       (declare (ignore mf-exit mh-help mh-debug mh-about))
 
