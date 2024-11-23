@@ -75,12 +75,14 @@
                             (lambda () (progn
                                          ;; (nodgui:append-text *outconsole* (first rep-item))
                                          ;; (newline-and-scroll)
+                                         (setf *first-field* nil) ;; release move handler
                                          (setf *used-rep* (second rep-item))
                                          (setf *view* colour)
                                          (setf *position* (get-starting-position))
                                          (draw-board *board* *position* *view*)
                                          (setf *move-number* 0)
                                          (setf *expected-move* nil)
+                                         (setf *side-to-move* :white)
                                          (choose-item-index)
                                          (do-automoves)
                                          (handle-rep-item-black)))

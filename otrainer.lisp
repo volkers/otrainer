@@ -22,6 +22,7 @@
 (defvar *following-moves* nil)
 (defvar *expected-move* nil)
 
+(defvar *first-field* nil "Starting point of a move")
 
 (defun newline-and-scroll ()
   "Append newline and show always last line."
@@ -129,53 +130,52 @@ Index 0 is a8 i.e. upper left corner; this follows FEN notation"
 (defun get-starting-position ()
   (copy-seq "rnbqkbnrpppppppp                                PPPPPPPPRNBQKBNR"))
 
-(let ((first-field nil))
-  (defun move-handler (idx)
-    "Handle the mouse clicks on the board"
-    ;; (format t "~a~%" idx)
-    (when (equal :black *view*)
-      (setf idx (- 63 idx)))
-    (if first-field
-        (let ((piece (char *position* first-field)))
-          ;; (format t "Moved from ~a to ~a~%" first-field idx)
-          (if (rule-checker-move-correct-p *position* first-field idx *side-to-move* *expected-move*)
-              ;; correct move
-              (progn
-                (cond
-                  ((and (char= piece #\K) (= first-field 60) (= idx 62))
-                   ;; short castling white
-                   (setf (char *position* first-field) #\Space)
-                   (setf (char *position* idx) #\K)
-                   (setf (char *position* 63) #\Space)
-                   (setf (char *position* 61) #\R))
-                  ((and (char= piece #\K) (= first-field 60) (= idx 58))
-                   ;; long castling white
-                   (setf (char *position* first-field) #\Space)
-                   (setf (char *position* idx) #\K)
-                   (setf (char *position* 56) #\Space)
-                   (setf (char *position* 59) #\R))
-                  ((and (char= piece #\k) (= first-field 4) (= idx 6))
-                   ;; short castling black
-                   (setf (char *position* first-field) #\Space)
-                   (setf (char *position* idx) #\k)
-                   (setf (char *position* 7) #\Space)
-                   (setf (char *position* 5) #\r))
-                  ((and (char= piece #\k) (= first-field 4) (= idx 2))
-                   ;; long castling black
-                   (setf (char *position* first-field) #\Space)
-                   (setf (char *position* idx) #\k)
-                   (setf (char *position* 0) #\Space)
-                   (setf (char *position* 3) #\r))
-                  (t
-                   ;; ordinary move
-                   (setf (char *position* first-field) #\Space)
-                   (setf (char *position* idx) piece)))
-                (draw-board *board* *position* *view*)
-                (setf first-field nil)
-                (toggle-side-to-move))
-               ;; move didn't follow the rules, cancel it
-              (setf first-field nil)))
-        (setf first-field idx))))
+(defun move-handler (idx)
+  "Handle the mouse clicks on the board"
+  ;; (format t "~a~%" idx)
+  (when (equal :black *view*)
+    (setf idx (- 63 idx)))
+  (if *first-field*
+      (let ((piece (char *position* *first-field*)))
+        ;; (format t "Moved from ~a to ~a~%" *first-field* idx)
+        (if (rule-checker-move-correct-p *position* *first-field* idx *side-to-move* *expected-move*)
+            ;; correct move
+            (progn
+              (cond
+                ((and (char= piece #\K) (= *first-field* 60) (= idx 62))
+                 ;; short castling white
+                 (setf (char *position* *first-field*) #\Space)
+                 (setf (char *position* idx) #\K)
+                 (setf (char *position* 63) #\Space)
+                 (setf (char *position* 61) #\R))
+                ((and (char= piece #\K) (= *first-field* 60) (= idx 58))
+                 ;; long castling white
+                 (setf (char *position* *first-field*) #\Space)
+                 (setf (char *position* idx) #\K)
+                 (setf (char *position* 56) #\Space)
+                 (setf (char *position* 59) #\R))
+                ((and (char= piece #\k) (= *first-field* 4) (= idx 6))
+                 ;; short castling black
+                 (setf (char *position* *first-field*) #\Space)
+                 (setf (char *position* idx) #\k)
+                 (setf (char *position* 7) #\Space)
+                 (setf (char *position* 5) #\r))
+                ((and (char= piece #\k) (= *first-field* 4) (= idx 2))
+                 ;; long castling black
+                 (setf (char *position* *first-field*) #\Space)
+                 (setf (char *position* idx) #\k)
+                 (setf (char *position* 0) #\Space)
+                 (setf (char *position* 3) #\r))
+                (t
+                 ;; ordinary move
+                 (setf (char *position* *first-field*) #\Space)
+                 (setf (char *position* idx) piece)))
+              (draw-board *board* *position* *view*)
+              (setf *first-field* nil)
+              (toggle-side-to-move))
+            ;; move didn't follow the rules, cancel it
+            (setf *first-field* nil)))
+      (setf *first-field* idx)))
 
 (load "repertoires")
 
