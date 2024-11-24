@@ -47,6 +47,18 @@
           finally (setf *move-number* move)) ;; maybe not needed?
     ))
 
+(defun new-item-and-restart ()
+  "Choose a new index and restart."
+  (nodgui:configure *next-button-handle* :state :disabled)
+  (setf *position* (get-starting-position))
+  (setf *side-to-move* :white)
+  (draw-board *board* *position* *view*)
+  (setf *move-number* 0)
+  (setf *expected-move* nil)
+  (choose-item-index)
+  (do-automoves)
+  (nodgui:after 1 #'handle-rep-item-black))
+
 (defun handle-rep-item-black ()
   "Choose repertoire item and handle the moves"
   (if *following-moves*
@@ -57,14 +69,7 @@
         (do-move white-move)
         (setf *expected-move* black-move))
       ;; choose a new index and restart
-      (progn
-        (setf *position* (get-starting-position))
-        (draw-board *board* *position* *view*)
-        (setf *move-number* 0)
-        (setf *expected-move* nil)
-        (choose-item-index)
-        (do-automoves)
-        (nodgui:after 1 #'handle-rep-item-black))))
+      (nodgui:configure *next-button-handle* :state :normal)))
 
 ;; started only with black generalize later
 (defun make-rep-buttons (parent-menu rep colour)
@@ -78,14 +83,7 @@
                                          (setf *first-field* nil) ;; release move handler
                                          (setf *used-rep* (second rep-item))
                                          (setf *view* colour)
-                                         (setf *position* (get-starting-position))
-                                         (draw-board *board* *position* *view*)
-                                         (setf *move-number* 0)
-                                         (setf *expected-move* nil)
-                                         (setf *side-to-move* :white)
-                                         (choose-item-index)
-                                         (do-automoves)
-                                         (handle-rep-item-black)))
+                                         (new-item-and-restart)))
                             )))
 
 ;; add read, save and defaults

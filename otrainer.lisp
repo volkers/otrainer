@@ -22,6 +22,8 @@
 (defvar *following-moves* nil)
 (defvar *expected-move* nil)
 
+(defvar *next-button-handle* nil)
+
 (defvar *first-field* nil "Starting point of a move")
 
 (defun newline-and-scroll ()
@@ -207,6 +209,12 @@ Index 0 is a8 i.e. upper left corner; this follows FEN notation"
            (mrep (nodgui:make-menu mb "Repertoire"))
            (mr-white (nodgui:make-menu mrep "White"))
            (mr-black (nodgui:make-menu mrep "Black"))
+           (next-button (nodgui:make-menubutton mb
+                                                "Next"
+                                                'new-item-and-restart
+                                                ;; :accelerator "Alt N" doesn't work in menu???
+                                                ;; :underline 0
+                                                :state :disabled))
            (mhelp (nodgui:make-menu mb "Help"))
            (mh-help (nodgui:make-menubutton mhelp "Help"
                                          (lambda () (progn
@@ -247,4 +255,5 @@ Index 0 is a8 i.e. upper left corner; this follows FEN notation"
       (setf *position* (get-starting-position))
       (draw-board *board* *position* *view*)
       (setf *side-to-move* :white)
-      (setq *outconsole* outconsole))))
+      (setq *outconsole* outconsole)
+      (setq *next-button-handle* next-button))))
