@@ -21,6 +21,7 @@
 (defvar *repertoires-black* nil)
 (defvar *following-moves* nil)
 (defvar *expected-move* nil)
+(defvar *move-comment* nil)
 
 (defvar *next-button-handle* nil)
 

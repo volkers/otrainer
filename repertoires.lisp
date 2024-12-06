@@ -67,7 +67,8 @@
              (white-move (first move-parts))
              (black-move (second move-parts)))
         (do-move white-move)
-        (setf *expected-move* black-move))
+        (setf *expected-move* black-move)
+        (setf *move-comment* (third move-parts)))
       ;; choose a new index and restart
       (nodgui:configure *next-button-handle* :state :normal)))
 
@@ -91,7 +92,7 @@
 ;; syntax:
 ;; (setf *repertoires-black*
 ;;   '(("Sizilianisch, Grand Prix, Tal-Gambit"
-;;      ;; #(prob automove (((w1-from w1-to) (b1-from b1-to)) ... ))
+;;      ;; #(prob automove (((w1-from w1-to) (b1-from b1-to) :optional "Comment") ... ))
 ;;      #((3 1 (((:e2 :e4) (:c7 :c5))
 ;;              ((:f2 :f4) (:d7 :d5))
 ;;              ((:d2 :d3) (:b8 :c6))

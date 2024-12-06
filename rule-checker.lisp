@@ -53,6 +53,10 @@
              (eql (index2board to) (k2i (second expected-move))))
         (progn ;; it is the expected move
           (setf *expected-move* nil)
+          (when *move-comment*
+            (nodgui:append-text *outconsole* (format nil "~a" *move-comment*))
+            (newline-and-scroll)
+            (setf *move-comment* nil))
           (nodgui:after 1 #'handle-rep-item-black))
         (progn ;; not expected
           (nodgui:append-text *outconsole* "Wrong, expected: ")
