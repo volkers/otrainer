@@ -204,6 +204,9 @@ Index 0 is a8 i.e. upper left corner; this follows FEN notation"
            (board-frame (make-instance 'nodgui:frame :master main-frame))
            (mb (nodgui:make-menubar))
            (mfile (nodgui:make-menu mb "File"))
+           (mf-save (nodgui:make-menubutton mfile "Save repertoires" 'save-reps
+                                     :underline 1
+                                     :accelerator "Alt s"))
            (mf-exit (nodgui:make-menubutton mfile "Exit" 'quit
                                      :underline 1
                                      :accelerator "Alt Q"))
@@ -233,7 +236,7 @@ Index 0 is a8 i.e. upper left corner; this follows FEN notation"
                                                        (nodgui:append-text outconsole "About called!")
                                                        (newline-and-scroll)))
                                           :underline 0)))
-      (declare (ignore mf-exit mh-help mh-debug mh-about))
+      (declare (ignore mf-exit mf-save mh-help mh-debug mh-about))
 
       ;; fill repertoire menus
       (make-rep-buttons mr-white *repertoires-white* :white)
@@ -249,6 +252,7 @@ Index 0 is a8 i.e. upper left corner; this follows FEN notation"
       ;; https://web.archive.org/web/20201111211515id_/https://effbot.org/tkinterbook/tkinter-events-and-bindings.htm
       (nodgui:wm-title nodgui:*tk* "otrainer")
       (nodgui:bind nodgui:*tk* "<Alt-q>" (lambda (event) (declare (ignore event)) (quit)))
+      (nodgui:bind nodgui:*tk* "<Alt-s>" (lambda (event) (declare (ignore event)) (save-reps)))
       (nodgui:pack main-frame)
       (nodgui:pack cmd-frame :side :left :fill :both :expand t)
       (nodgui:pack outconsole :side :top :fill :both :expand t)

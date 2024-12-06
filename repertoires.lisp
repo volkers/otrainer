@@ -19,7 +19,7 @@
 
 (in-package #:otrainer)
 
-(defvar *repo-filename* "./myrepertoire.lisp")
+(defvar *black-repo-filename* "./myblackrepertoire.rep")
 
 (defun choose-item-index ()
   (let ((prob-list (map 'list #'first *used-rep*)))
@@ -88,7 +88,31 @@
                             )))
 
 ;; add read, save and defaults
-(load *repo-filename*)
+
+;; syntax:
+;;   (("Sizilianisch, Grand Prix, Tal-Gambit"
+;;     ;; #(prob automove (((w1-from w1-to) (b1-from b1-to) :optional "Comment") ... ))
+;;     #((3 1 (((:e2 :e4) (:c7 :c5))
+;;             ((:f2 :f4) (:d7 :d5))
+;;             ((:d2 :d3) (:b8 :c6))
+;;             ((:g1 :f3) (:c8 :g4))))
+;;       (3 1 (((:e2 :e4) (:c7 :c5))
+;; ...
+;;       ))))
+
+(defun load-reps ()
+  "Load repertoirs."
+  (with-open-file (in *black-repo-filename*)
+    (with-standard-io-syntax
+      (setf *repertoires-black* (read in)))))
+
+;; load edited rep
+;; (defvar *repo-filename* "./myrepertoire.lisp")
+;; (load *repo-filename*) ;; read manual written rep
+
+;; load saved rep
+(load-reps)
+
 ;; syntax:
 ;; (setf *repertoires-black*
 ;;   '(("Sizilianisch, Grand Prix, Tal-Gambit"
@@ -101,6 +125,13 @@
 ;; ...
 ;;        ))))
 
+(defun save-reps ()
+  "Save repertoires to file."
+  (with-open-file (out *black-repo-filename*
+                       :direction :output
+                       :if-exists :supersede)
+    (with-standard-io-syntax
+      (print *repertoires-black* out))))
 
 (defvar *repertoires-white*
   '(("Reti"
