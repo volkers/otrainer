@@ -19,6 +19,7 @@
 
 (in-package #:otrainer)
 
+(defvar *white-repo-filename* "./mywhiterepertoire.rep")
 (defvar *black-repo-filename* "./myblackrepertoire.rep")
 
 (defun choose-item-index ()
@@ -57,18 +58,26 @@
   (setf *expected-move* nil)
   (choose-item-index)
   (do-automoves)
-  (nodgui:after 1 #'handle-rep-item-black))
+  (nodgui:after 1 #'handle-rep-item))
 
-(defun handle-rep-item-black ()
+(defun handle-rep-item ()
   "Choose repertoire item and handle the moves"
   (if *following-moves*
       ;; handle following moves
       (let* ((move-parts (pop *following-moves*))
              (white-move (first move-parts))
              (black-move (second move-parts)))
-        (do-move white-move)
-        (setf *expected-move* black-move)
-        (setf *move-comment* (third move-parts)))
+        (if (equal :white *view*)
+            (progn
+              (when *black-move-to-do*
+                (do-move *black-move-to-do*))
+              (setf *expected-move* white-move)
+              (setf *black-move-to-do* black-move)
+              (setf *move-comment* (third move-parts)))
+            (progn
+              (do-move white-move)
+              (setf *expected-move* black-move)
+              (setf *move-comment* (third move-parts)))))
       ;; choose a new index and restart
       (nodgui:configure *next-button-handle* :state :normal)))
 
@@ -102,6 +111,9 @@
 
 (defun load-reps ()
   "Load repertoirs."
+  (with-open-file (in *white-repo-filename*)
+    (with-standard-io-syntax
+      (setf *repertoires-white* (read in))))
   (with-open-file (in *black-repo-filename*)
     (with-standard-io-syntax
       (setf *repertoires-black* (read in)))))
@@ -127,14 +139,13 @@
 
 (defun save-reps ()
   "Save repertoires to file."
+  (with-open-file (out *white-repo-filename*
+                       :direction :output
+                       :if-exists :supersede)
+    (with-standard-io-syntax
+      (print *repertoires-white* out)))
   (with-open-file (out *black-repo-filename*
                        :direction :output
                        :if-exists :supersede)
     (with-standard-io-syntax
       (print *repertoires-black* out))))
-
-(defvar *repertoires-white*
-  '(("Reti"
-     ;; #(prob automove (((w1-from w1-to) (b1-from b1-to)) ... ))
-     )))
-

@@ -18,9 +18,11 @@
 (defvar *used-rep* nil "Active repertoire item")
 (defvar *item-index* nil "Active repertoire item index")
 (defvar *move-number* nil "Actual move number")
+(defvar *repertoires-white* nil)
 (defvar *repertoires-black* nil)
 (defvar *following-moves* nil)
 (defvar *expected-move* nil)
+(defvar *black-move-to-do* nil)
 (defvar *move-comment* nil)
 
 (defvar *next-button-handle* nil)

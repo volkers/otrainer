@@ -20,7 +20,7 @@
 (in-package #:otrainer)
 
 ;; load order seems not perfect
-(declaim (ftype (function () t) handle-rep-item-black))
+(declaim (ftype (function () t) handle-rep-item))
 
 (defun index2board (idx)
   "Return index relative to the board not the view"
@@ -57,7 +57,7 @@
             (nodgui:append-text *outconsole* (format nil "~a" *move-comment*))
             (newline-and-scroll)
             (setf *move-comment* nil))
-          (nodgui:after 1 #'handle-rep-item-black))
+          (nodgui:after 1 #'handle-rep-item))
         (progn ;; not expected
           (nodgui:append-text *outconsole* "Wrong, expected: ")
           (nodgui:append-text *outconsole* *expected-move*)
