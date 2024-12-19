@@ -107,11 +107,11 @@
       (setf *repertoires-black* (read in)))))
 
 ;; load edited rep
-;; (defvar *repo-filename* "./myrepertoire.lisp")
-;; (load *repo-filename*) ;; read manual written rep
+(defvar *repo-filename* "./myrepertoire.lisp")
+(load *repo-filename*) ;; read manual written rep
 
 ;; load saved rep
-(load-reps)
+;; (load-reps)
 
 ;; syntax:
 ;; (setf *repertoires-black*
