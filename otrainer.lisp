@@ -18,6 +18,7 @@
 (defvar *used-rep* nil "Active repertoire item")
 (defvar *item-index* nil "Active repertoire item index")
 (defvar *move-number* nil "Actual move number")
+(defvar *ep-target-square* nil "En passant target square")
 (defvar *repertoires-white* nil)
 (defvar *repertoires-black* nil)
 (defvar *following-moves* nil)
@@ -147,30 +148,30 @@ Index 0 is a8 i.e. upper left corner; this follows FEN notation"
             ;; correct move
             (progn
               (cond
-                ((and (char= piece #\K) (= *first-field* 60) (= idx 62))
+                ((and (char= piece #\K) (= *first-field* (k2i :e1)) (= idx (k2i :g1)))
                  ;; short castling white
                  (setf (char *position* *first-field*) #\Space)
                  (setf (char *position* idx) #\K)
-                 (setf (char *position* 63) #\Space)
-                 (setf (char *position* 61) #\R))
-                ((and (char= piece #\K) (= *first-field* 60) (= idx 58))
+                 (setf (char *position* (k2i :h1)) #\Space)
+                 (setf (char *position* (k2i :f1)) #\R))
+                ((and (char= piece #\K) (= *first-field* (k2i :e1)) (= idx (k2i :c1)))
                  ;; long castling white
                  (setf (char *position* *first-field*) #\Space)
                  (setf (char *position* idx) #\K)
-                 (setf (char *position* 56) #\Space)
-                 (setf (char *position* 59) #\R))
-                ((and (char= piece #\k) (= *first-field* 4) (= idx 6))
+                 (setf (char *position* (k2i :a1)) #\Space)
+                 (setf (char *position* (k2i :d1)) #\R))
+                ((and (char= piece #\k) (= *first-field* (k2i :e8)) (= idx (k2i :g8)))
                  ;; short castling black
                  (setf (char *position* *first-field*) #\Space)
                  (setf (char *position* idx) #\k)
-                 (setf (char *position* 7) #\Space)
-                 (setf (char *position* 5) #\r))
-                ((and (char= piece #\k) (= *first-field* 4) (= idx 2))
+                 (setf (char *position* (k2i :h8)) #\Space)
+                 (setf (char *position* (k2i :f8)) #\r))
+                ((and (char= piece #\k) (= *first-field* (k2i :e8)) (= idx (k2i :c8)))
                  ;; long castling black
                  (setf (char *position* *first-field*) #\Space)
                  (setf (char *position* idx) #\k)
-                 (setf (char *position* 0) #\Space)
-                 (setf (char *position* 3) #\r))
+                 (setf (char *position* (k2i :a8)) #\Space)
+                 (setf (char *position* (k2i :d8)) #\r))
                 (t
                  ;; ordinary move
                  (setf (char *position* *first-field*) #\Space)
