@@ -28,29 +28,32 @@
       (setf idx (- 63 idx))
       idx))
 
-(defun k2i (key)
-  "Translate key (e.g. :e4) to corresponding index (e.g. 36 when view is white)"
-  (let ((idx
-          (getf (list :a1 56 :b1 57 :c1 58 :d1 59 :e1 60 :f1 61 :g1 62 :h1 63
-                      :a2 48 :b2 49 :c2 50 :d2 51 :e2 52 :f2 53 :g2 54 :h2 55
-                      :a3 40 :b3 41 :c3 42 :d3 43 :e3 44 :f3 45 :g3 46 :h3 47
-                      :a4 32 :b4 33 :c4 34 :d4 35 :e4 36 :f4 37 :g4 38 :h4 39
-                      :a5 24 :b5 25 :c5 26 :d5 27 :e5 28 :f5 29 :g5 30 :h5 31
-                      :a6 16 :b6 17 :c6 18 :d6 19 :e6 20 :f6 21 :g6 22 :h6 23
-                      :a7 8  :b7 9  :c7 10 :d7 11 :e7 12 :f7 13 :g7 14 :h7 15
-                      :a8 0  :b8 1  :c8 2  :d8 3  :e8 4  :f8 5  :g8 6  :h8 7)
-                key)))
-    (if (equal :black *view*)
-        (- 63 idx)
-        idx)))
+(defun k2i (key &optional handle-view)
+  "Translate key (e.g. :e4) to corresponding index (e.g. 36 when view is white).
+If handle-view is true handle also view index, i.e. invert index number when black.
+Rule of thumb: in move-handler the view is already handled, outside it should be t"
+  (and key
+       (let ((idx
+               (getf (list :a1 56 :b1 57 :c1 58 :d1 59 :e1 60 :f1 61 :g1 62 :h1 63
+                           :a2 48 :b2 49 :c2 50 :d2 51 :e2 52 :f2 53 :g2 54 :h2 55
+                           :a3 40 :b3 41 :c3 42 :d3 43 :e3 44 :f3 45 :g3 46 :h3 47
+                           :a4 32 :b4 33 :c4 34 :d4 35 :e4 36 :f4 37 :g4 38 :h4 39
+                           :a5 24 :b5 25 :c5 26 :d5 27 :e5 28 :f5 29 :g5 30 :h5 31
+                           :a6 16 :b6 17 :c6 18 :d6 19 :e6 20 :f6 21 :g6 22 :h6 23
+                           :a7 8  :b7 9  :c7 10 :d7 11 :e7 12 :f7 13 :g7 14 :h7 15
+                           :a8 0  :b8 1  :c8 2  :d8 3  :e8 4  :f8 5  :g8 6  :h8 7)
+                     key)))
+         (if (and handle-view (equal :black *view*))
+             (- 63 idx)
+             idx))))
 
 ;; todo: remove or improve manipulation of globals.
 (defun rule-checker-move-correct-p (pos from to side-to-move expected-move)
   "Returns t if the move follows the rules and is equal to the expected move (if there is one)."
   ;; (princ (format t "from=~a to=~a" from to))
   (when expected-move
-    (if (and (eql (index2board from) (k2i (first expected-move)))
-             (eql (index2board to) (k2i (second expected-move))))
+    (if (and (eql (index2board from) (k2i (first expected-move) t))
+             (eql (index2board to) (k2i (second expected-move) t)))
         (progn ;; it is the expected move
           (setf *expected-move* nil)
           (when *move-comment*

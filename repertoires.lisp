@@ -32,8 +32,8 @@
 
 (defun do-move (move)
   "Perform the actual move, where move is e.g. '(:e2 :e4)"
-  (move-handler (k2i (first move)))
-  (move-handler (k2i (second move))))
+  (move-handler (k2i (first move) t))
+  (move-handler (k2i (second move) t)))
 
 (defun do-automoves ()
   (let ((automove (second (svref *used-rep* *item-index*))))
