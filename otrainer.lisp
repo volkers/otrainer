@@ -295,6 +295,7 @@ Index 0 is a8 i.e. upper left corner; this follows FEN notation"
 (defun main ()
   "GUI window with menu bar and scrolled text output."
   (nodgui:with-nodgui ()
+    (nodgui:use-theme "default") ; built-in themes: alt, default, clam and classic
     (let* ((main-frame (make-instance 'nodgui:frame))
            (cmd-frame  (make-instance 'nodgui:frame :master main-frame))
            (outconsole (make-instance 'nodgui:scrolled-text :borderwidth 2 :relief :raised :master cmd-frame))
